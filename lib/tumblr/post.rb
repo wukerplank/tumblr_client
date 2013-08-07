@@ -102,17 +102,27 @@ module Tumblr
     def extract_data!(options)
       if options.has_key?(:data)
         data = options.delete :data
-        data = [data] unless Array === data
-        data.each.with_index do |filepath, idx|
-          mime = MIME::Types.type_for(filepath)
-          if (!mime.empty?)
-            mime_type = MIME::Types.type_for(filepath)[0].content_type
-          else
-            mime_type = "application/octet-stream"
+        
+        if Array === data
+          data.each.with_index do |filepath, idx|
+            mime_type = extract_mimetype(filepath)
+            options["data[#{idx}]"] = Faraday::UploadIO.new(filepath, mime_type)
           end
-          options["data[#{idx}]"] = Faraday::UploadIO.new(filepath, mime_type)
+        else
+          mime_type = extract_mimetype(data)
+          options["data"] = Faraday::UploadIO.new(data, mime_type)
         end
       end
+    end
+
+    def extract_mimetype(filepath)
+      mime = MIME::Types.type_for(filepath)
+      if (mime.empty?)
+        mime_type = "application/octet-stream"
+      else
+        mime_type = MIME::Types.type_for(filepath)[0].content_type
+      end
+      mime_type
     end
 
   end
