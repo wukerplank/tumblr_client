@@ -89,6 +89,35 @@ describe Tumblr::Post do
 
   end
 
+  describe :create_post do
+
+    let(:blog_name) { 'seejohnrun' }
+    let(:args) { { :source => 'somesource' } }
+
+    context 'with a valid post type' do
+
+      before do
+        client.should_receive(:photo).with(blog_name, args).and_return 'hi'
+      end
+
+      it 'should call the right method and grab the return' do
+        client.create_post(:photo, blog_name, args).should == 'hi'
+      end
+
+    end
+
+    context 'with an invalid post type' do
+
+      it 'should raise an error' do
+        lambda do
+          client.create_post(:fake, blog_name, args)
+        end.should raise_error ArgumentError, '"fake" is not a valid post type'
+      end
+
+    end
+
+  end
+
   # Complex post types
   [:photo, :audio, :video].each do |type|
 

@@ -4,6 +4,7 @@ module Tumblr
   module Post
 
     STANDARD_POST_OPTIONS = [:state, :tags, :tweet, :date, :markdown, :slug, :format]
+    VALID_POST_TYPES = [:audio, :photo, :quote, :text, :link, :chat, :video]
 
     def edit(blog_name, options = {})
       convert_source_array :source, options
@@ -79,6 +80,14 @@ module Tumblr
       options[:type] = 'video'
       extract_data!(options)
       post(post_path(blog_name), options)
+    end
+
+    def create_post(type, blog_name, options = {})
+      if VALID_POST_TYPES.include?(type)
+        send(type, blog_name, options)
+      else
+        raise ArgumentError.new "\"#{type}\" is not a valid post type"
+      end
     end
 
     private
