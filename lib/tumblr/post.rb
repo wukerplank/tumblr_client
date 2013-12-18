@@ -99,10 +99,11 @@ module Tumblr
     # Allow source to be passed as an Array
     def convert_source_array(key, options)
       if options.has_key?(key) && options[key].kind_of?(Array)
+        hash = {}
         options[key].each.with_index do |src, idx|
-          options["#{key.to_s}[#{idx}]"] = src
+          hash[idx] = src
         end
-        options.delete(key)
+        options[key] = hash
       end
     end
 
@@ -111,7 +112,6 @@ module Tumblr
     def extract_data!(options)
       if options.has_key?(:data)
         data = options.delete :data
-        
         if Array === data
           data.each.with_index do |filepath, idx|
             mime_type = extract_mimetype(filepath)
