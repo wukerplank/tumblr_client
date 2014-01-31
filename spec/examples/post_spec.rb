@@ -148,6 +148,11 @@ describe Tumblr::Post do
           r.should == 'post'
         end
 
+        it 'should be able to pass data as an array of uploadios' do
+          r = client.send type, blog_name, :data => [Faraday::UploadIO.new(StringIO.new, 'image/jpeg')]
+          r.should == 'post'
+        end
+
       end
 
       context 'when passing data different ways' do
@@ -163,6 +168,11 @@ describe Tumblr::Post do
 
         it 'should be able to pass data as a single filepath' do
           r = client.send type, blog_name, :data => file_path + ".jpg"
+          r.should == 'post'
+        end
+
+        it 'should be able to pass data as a single uploadio' do
+          r = client.send type, blog_name, :data => Faraday::UploadIO.new(StringIO.new, 'image/jpeg')
           r.should == 'post'
         end
 

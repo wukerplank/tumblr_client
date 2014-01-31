@@ -114,9 +114,15 @@ module Tumblr
         
         if Array === data
           data.each.with_index do |filepath, idx|
-            mime_type = extract_mimetype(filepath)
-            options["data[#{idx}]"] = Faraday::UploadIO.new(filepath, mime_type)
+            if filepath.is_a?(Faraday::UploadIO)
+              options["data[#{idx}]"] = filepath
+            else
+              mime_type = extract_mimetype(filepath)
+              options["data[#{idx}]"] = Faraday::UploadIO.new(filepath, mime_type)
+            end
           end
+        elsif data.is_a?(Faraday::UploadIO)
+          options["data"] = data
         else
           mime_type = extract_mimetype(data)
           options["data"] = Faraday::UploadIO.new(data, mime_type)
