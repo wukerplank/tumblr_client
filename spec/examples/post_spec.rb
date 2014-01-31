@@ -28,6 +28,56 @@ describe Tumblr::Post do
   end
 
   describe :edit do
+    [:photo, :audio, :video].each do |type|
+      describe type do
+        context 'when passing data as an array of filepaths' do
+          before do
+            fakefile = OpenStruct.new :read => file_data
+            File.stub(:open).with(file_path + '.jpg').and_return(fakefile)
+            client.should_receive(:post).once.with("v2/blog/#{blog_name}/post/edit", {
+              'data[0]' => kind_of(Faraday::UploadIO),
+                :id => 123,
+                :type => type
+            }).and_return('response')
+          end
+
+          it 'should be able to pass data as an array of filepaths' do
+            r = client.edit blog_name, :data => [file_path + ".jpg"], :id => 123, :type => type
+            r.should == 'response'
+          end
+
+          it 'should be able to pass data as an array of uploadios' do
+            r = client.edit blog_name, :data => [Faraday::UploadIO.new(StringIO.new, 'image/jpeg')], :id => 123, :type => type
+            r.should == 'response'
+          end
+
+        end
+
+        context 'when passing data different ways' do
+
+          before do
+            fakefile = OpenStruct.new :read => file_data
+            File.stub(:open).with(file_path + '.jpg').and_return(fakefile)
+            client.should_receive(:post).once.with("v2/blog/#{blog_name}/post/edit", {
+              'data' => kind_of(Faraday::UploadIO),
+                :id => 123,
+                :type => type
+            }).and_return('response')
+          end
+
+          it 'should be able to pass data as a single filepath' do
+            r = client.edit blog_name, :data => file_path + ".jpg", :id => 123, :type => type
+            r.should == 'response'
+          end
+
+          it 'should be able to pass data as a single uploadio' do
+            r = client.edit blog_name, :data => Faraday::UploadIO.new(StringIO.new, 'image/jpeg'), :id => 123, :type => type
+            r.should == 'response'
+          end
+
+        end
+      end
+    end
 
     it 'should make the correct call' do
       client.should_receive(:post).once.with("v2/blog/#{blog_name}/post/edit", {
@@ -36,7 +86,6 @@ describe Tumblr::Post do
       r = client.edit blog_name, :id => 123
       r.should == 'response'
     end
-
   end
 
   describe :reblog do

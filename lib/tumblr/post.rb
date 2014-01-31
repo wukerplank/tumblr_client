@@ -4,10 +4,13 @@ module Tumblr
   module Post
 
     STANDARD_POST_OPTIONS = [:state, :tags, :tweet, :date, :markdown, :slug, :format]
-    VALID_POST_TYPES = [:audio, :photo, :quote, :text, :link, :chat, :video]
+    DATA_POST_TYPES = [:audio, :video, :photo]
+    VALID_POST_TYPES = DATA_POST_TYPES + [:quote, :text, :link, :chat]
 
     def edit(blog_name, options = {})
       convert_source_array :source, options
+      extract_data!(options) if DATA_POST_TYPES.include?(options[:type])
+
       post(blog_path(blog_name, 'post/edit'), options)
     end
 
