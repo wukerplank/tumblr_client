@@ -4,10 +4,13 @@ module Tumblr
   module Post
 
     STANDARD_POST_OPTIONS = [:state, :tags, :tweet, :date, :markdown, :slug, :format]
-    VALID_POST_TYPES = [:audio, :photo, :quote, :text, :link, :chat, :video]
+    DATA_POST_TYPES = [:audio, :video, :photo]
+    VALID_POST_TYPES = DATA_POST_TYPES + [:quote, :text, :link, :chat]
 
     def edit(blog_name, options = {})
       convert_source_array :source, options
+      extract_data!(options) if DATA_POST_TYPES.include?(options[:type])
+
       post(blog_path(blog_name, 'post/edit'), options)
     end
 
@@ -114,9 +117,15 @@ module Tumblr
         
         if Array === data
           data.each.with_index do |filepath, idx|
-            mime_type = extract_mimetype(filepath)
-            options["data[#{idx}]"] = Faraday::UploadIO.new(filepath, mime_type)
+            if filepath.is_a?(Faraday::UploadIO)
+              options["data[#{idx}]"] = filepath
+            else
+              mime_type = extract_mimetype(filepath)
+              options["data[#{idx}]"] = Faraday::UploadIO.new(filepath, mime_type)
+            end
           end
+        elsif data.is_a?(Faraday::UploadIO)
+          options["data"] = data
         else
           mime_type = extract_mimetype(data)
           options["data"] = Faraday::UploadIO.new(data, mime_type)
