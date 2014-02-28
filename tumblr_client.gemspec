@@ -2,8 +2,8 @@
 require File.join(File.dirname(__FILE__), 'lib/tumblr/version')
 
 Gem::Specification.new do |gem|
-  gem.add_dependency 'faraday', '>= 0.8'
-  gem.add_dependency 'faraday_middleware', '>= 0.8'
+  gem.add_dependency 'faraday', '~> 0.8.9'
+  gem.add_dependency 'faraday_middleware', '~> 0.8'
   gem.add_dependency 'json'
   gem.add_dependency 'simple_oauth'
   gem.add_dependency 'oauth'
@@ -21,7 +21,6 @@ Gem::Specification.new do |gem|
   gem.license = "Apache"
   gem.name = "tumblr_client"
   gem.require_paths = ["lib"]
-  gem.required_rubygems_version = Gem::Requirement.new('>= 1.3.6')
   gem.summary = %q{Tumblr API wrapper}
   gem.test_files = `git ls-files -- {test,spec,features}/*`.split("\n")
   gem.version = Tumblr::VERSION
