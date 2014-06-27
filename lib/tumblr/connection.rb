@@ -5,7 +5,8 @@ module Tumblr
   module Connection
 
     def connection(options={})
-      
+      options = options.clone
+
       default_options = {
         :headers => {
           :accept => 'application/json',
@@ -14,7 +15,7 @@ module Tumblr
         :url => "http://#{api_host}/"
       }
 
-      client = options[:client] ||= Faraday.default_adapter
+      client = options.delete(:client) || Faraday.default_adapter
 
       Faraday.new("http://#{api_host}/", default_options.merge(options)) do |conn|
         data = { :api_host => api_host }.merge(credentials)
