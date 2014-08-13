@@ -43,4 +43,24 @@ describe Tumblr::Client do
 
   end
 
+  describe :api_scheme do
+
+    it 'defaults to https' do
+      expect(Tumblr::Client.new.api_scheme).to eq('https')
+    end
+
+    it 'can be set by the initializer' do
+      client = Tumblr::Client.new(:api_scheme => 'http')
+      expect(client.api_scheme).to eq('http')
+    end
+
+    it 'can be set globally' do
+      Tumblr.configure do |c|
+        c.api_scheme = 'http'
+      end
+      expect(Tumblr::Client.new.api_scheme).to eq('http')
+    end
+
+  end
+
 end
