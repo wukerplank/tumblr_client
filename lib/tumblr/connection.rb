@@ -15,7 +15,7 @@ module Tumblr
         :url => "http://#{api_host}/"
       }
 
-      client = options.delete(:client) || Faraday.default_adapter
+      client = Faraday.default_adapter
 
       Faraday.new("http://#{api_host}/", default_options.merge(options)) do |conn|
         data = { :api_host => api_host }.merge(credentials)
