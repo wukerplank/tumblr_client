@@ -13,16 +13,16 @@ describe Tumblr::Client do
 
     it 'should give new clients those credentials' do
       client = Tumblr::Client.new
-      client.credentials[:consumer_key].should == @key
+      expect(client.credentials[:consumer_key]).to eq(@key)
     end
 
     it 'should have it\'s own credentials' do
-      Tumblr.credentials[:consumer_key].should == @key
+      expect(Tumblr.credentials[:consumer_key]).to eq(@key)
     end
 
     it 'should be able to make a new client (using these credentials)' do
-      Tumblr.new.should be_a(Tumblr::Client)
-      Tumblr.new.credentials[:consumer_key].should == @key
+      expect(Tumblr.new).to be_a(Tumblr::Client)
+      expect(Tumblr.new.credentials[:consumer_key]).to eq(@key)
     end
 
   end
@@ -35,10 +35,10 @@ describe Tumblr::Client do
     end
 
     it 'should keep them separate' do
-      [
+      expect([
         @client1.credentials[:consumer_key],
         @client2.credentials[:consumer_key]
-      ].uniq.count.should == 2
+      ].uniq.count).to eq(2)
     end
 
   end
