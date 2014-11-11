@@ -21,7 +21,7 @@ module Tumblr
 
     # Gets the list of likes for the blog
     def blog_likes(blog_name, options = {})
-      validate_options([:limit, :offset], options)
+      validate_options([:limit, :offset, :before, :after], options)
       url = blog_path(blog_name, 'likes')
 
       params = { :api_key => @consumer_key }

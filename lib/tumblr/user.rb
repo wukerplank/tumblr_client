@@ -12,7 +12,7 @@ module Tumblr
     end
 
     def likes(options = {})
-      validate_options([:limit, :offset], options)
+      validate_options([:limit, :offset, :before, :after], options)
       get('v2/user/likes', options)
     end
 
