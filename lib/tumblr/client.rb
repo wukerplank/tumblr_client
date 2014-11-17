@@ -34,6 +34,10 @@ module Tumblr
       self.class.default_api_host
     end
 
+    def api_scheme
+      @api_scheme || 'https'
+    end
+
     def credentials
       {
         :consumer_key => @consumer_key,
