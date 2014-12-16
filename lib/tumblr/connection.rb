@@ -10,7 +10,7 @@ module Tumblr
       default_options = {
         :headers => {
           :accept => 'application/json',
-          :user_agent => "tumblr_client/#{Tumblr::VERSION}"
+          :user_agent => "tumblr_client (ruby) - #{Tumblr::VERSION}"
         },
         :url => "http://#{api_host}/"
       }
