@@ -1,6 +1,6 @@
 # Contributing
 
-We want to make contributing to XExtensionItem as easy and transparent as possible. If you run into problems, please open an issue. We also actively welcome pull requests.
+We want to make contributing to tumblr_client as easy and transparent as possible. If you run into problems, please open an issue. We also actively welcome pull requests.
 
 ## Pull Requests
 
@@ -18,5 +18,5 @@ Complete your CLA [here](http://static.tumblr.com/zyubucd/GaTngbrpr/tumblr_corpo
 
 ## License
 
-By contributing to XExtensionItem you agree that your contributions will be licensed under its Apache 2.0 license.
+By contributing to tumblr_client you agree that your contributions will be licensed under its Apache 2.0 license.
 
