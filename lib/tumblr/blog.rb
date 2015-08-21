@@ -46,7 +46,7 @@ module Tumblr
     end
 
     def draft(blog_name, options = {})
-      validate_options([:limit, :offset], options)
+      validate_options([:limit, :before_id], options)
       get(blog_path(blog_name, 'posts/draft'), options)
     end
 
