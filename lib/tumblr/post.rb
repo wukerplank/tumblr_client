@@ -76,7 +76,7 @@ module Tumblr
     end
 
     def video(blog_name, options = {})
-      valid_opts = STANDARD_POST_OPTIONS + [:data, :embed, :caption]
+      valid_opts = STANDARD_POST_OPTIONS + [:data, :embed, :caption, :source, :link]
       validate_options(valid_opts, options)
       validate_no_collision options, [:data, :embed]
 
